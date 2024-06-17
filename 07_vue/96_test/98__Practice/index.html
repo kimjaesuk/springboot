@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./data.js"></script> 데이터js랑 연결부분 
+    <title>Document</title>
+    <style>
+        .scholar, .msaSkill {
+            text-align: center;
+            width: 500px;
+            height: 500px;
+            border: 1px solid black;
+            overflow: hidden;   
+        }
+        img {
+            width: 200px;
+            height: auto;
+        }
+        .msaSkill-img {
+            width: 150px;
+            height: auto;
+        }
+        div{
+            float: left; 
+        }
+    </style>
+</head>
+<body>
+    <h1>vue template 이벤트 적용</h1> 제목
+    <div id="app">
+        <button @click="toggleMode()"> 버튼을 변수로 취급한 이유(누를때마다 버튼의 이름을 바꾸기위해 변수로 선언)
+
+            <div>
+            <p v-if="isCharacterMode">Skill Mode</p>  참일떄 스킬 모드라는 버튼이 생성
+            <p v-else>Character Mode</p>              거짓일때 캐릭터모드라는 버튼이 생성
+            </div>
+            <!-- {{ isCharacterMode ? 'Skill Mode' : 'Character Mode' }} 삼항연산자로 만든 버튼 --> 
+        </button>
+
+        <div v-if="isCharacterMode">
+
+            <div v-for="scholar in jsonData" :key="scholar.id" class="scholar">
+                <div>
+                    <h4>이름 : {{ scholar.name }}</h4>  
+                    <p>소개 : {{ scholar.introduction }}</p>
+                </div>
+
+                <img :src="scholar.img" :alt="scholar.name" class="scholar-img">
+            </div>
+        </div>
+
+        <div v-else>
+            <div v-for="msaSkill in jsonSkillData" :key="msaSkill.id" class="msaSkill">
+                <div>
+                    <h4>이름 : {{ msaSkill.skill }}</h4>
+                    <p>소개 : {{ msaSkill.introduction }}</p>
+                </div>
+                    <img v-for="img in msaSkill.imgs" :src="img" :alt="msaSkill.skill" class="msaSkill-img">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+
+        createApp({
+            setup() {
+                const jsonData = scholar;
+                const jsonSkillData = msaSkill;
+                const isCharacterMode = ref(true);
+
+                const toggleMode = () => {
+                    isCharacterMode.value = !isCharacterMode.value;
+                };
+
+                return {
+                    jsonData,
+                    jsonSkillData,
+                    isCharacterMode,
+                    toggleMode
+                }
+            }
+        }).mount("#app");
+    </script>
+</body>
+</html>
